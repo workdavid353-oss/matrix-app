@@ -7,13 +7,14 @@ import EditProjectButton from '@/components/ui/EditProjectButton';
 import type { Task } from '@/types';
 
 export default async function ProjectPage({
-  params: { locale, id },
+  params,
 }: {
-  params: { locale: string; id: string };
+  params: Promise<{ locale: string; id: string }>;
 }) {
+  const { locale, id } = await params;
   const t = await getTranslations('tasks');
   const tp = await getTranslations('projects');
-  const supabase = createClient();
+  const supabase = await createClient();
 
   const { data: { user } } = await supabase.auth.getUser();
   const { data: profile } = await supabase.from('profiles').select('role').eq('id', user!.id).single();

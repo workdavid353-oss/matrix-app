@@ -10,9 +10,10 @@ const categoryStyle: Record<string, string> = {
   news: 'bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400',
 };
 
-export default async function UpdatesPage({ params: { locale } }: { params: { locale: string } }) {
+export default async function UpdatesPage({ params }: { params: Promise<{ locale: string }> }) {
+  const { locale } = await params;
   const t = await getTranslations('updates');
-  const supabase = createClient();
+  const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
   const { data: profile } = await supabase.from('profiles').select('role').eq('id', user!.id).single();
   const isAdmin = profile?.role === 'admin';

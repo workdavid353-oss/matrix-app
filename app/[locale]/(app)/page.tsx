@@ -5,7 +5,7 @@ import type { Task } from '@/types';
 
 export default async function HomePage() {
   const t = await getTranslations('tasks');
-  const supabase = createClient();
+  const supabase = await createClient();
 
   const { data: { user } } = await supabase.auth.getUser();
   const { data: profile } = await supabase

@@ -5,9 +5,10 @@ import { FolderOpen } from 'lucide-react';
 import NewProjectButton from '@/components/ui/NewProjectButton';
 import type { Project } from '@/types';
 
-export default async function ProjectsPage({ params: { locale } }: { params: { locale: string } }) {
+export default async function ProjectsPage({ params }: { params: Promise<{ locale: string }> }) {
+  const { locale } = await params;
   const t = await getTranslations('projects');
-  const supabase = createClient();
+  const supabase = await createClient();
 
   const { data: { user } } = await supabase.auth.getUser();
   const { data: profile } = await supabase.from('profiles').select('role').eq('id', user!.id).single();

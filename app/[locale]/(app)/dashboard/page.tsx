@@ -4,9 +4,10 @@ import { redirect } from 'next/navigation';
 import AdminUserRow from '@/components/ui/AdminUserRow';
 import type { Profile } from '@/types';
 
-export default async function AdminDashboard({ params: { locale } }: { params: { locale: string } }) {
+export default async function AdminDashboard({ params }: { params: Promise<{ locale: string }> }) {
+  const { locale } = await params;
   const t = await getTranslations('admin');
-  const supabase = createClient();
+  const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
   const { data: profile } = await supabase.from('profiles').select('role').eq('id', user!.id).single();
 

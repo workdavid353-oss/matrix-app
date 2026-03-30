@@ -5,7 +5,7 @@ import type { Profile } from '@/types';
 
 export default async function MembersPage() {
   const t = await getTranslations('members');
-  const supabase = createClient();
+  const supabase = await createClient();
 
   const { data: members } = await supabase
     .from('profiles')
