@@ -1,0 +1,84 @@
+{
+  "nav": {
+    "home": "Home",
+    "projects": "Projects",
+    "history": "History",
+    "updates": "Updates",
+    "members": "Members",
+    "admin": "Admin",
+    "logout": "Sign out"
+  },
+  "auth": {
+    "login": "Sign in",
+    "register": "Create account",
+    "email": "Email",
+    "password": "Password",
+    "fullName": "Full name",
+    "loginTitle": "Welcome back",
+    "loginSubtitle": "Sign in to your account",
+    "registerTitle": "Join the group",
+    "registerSubtitle": "Your account will require admin approval",
+    "pending": "Account pending",
+    "pendingMessage": "Your account is awaiting admin approval. You'll receive access shortly.",
+    "noAccount": "Don't have an account?",
+    "haveAccount": "Already have an account?"
+  },
+  "tasks": {
+    "title": "Tasks",
+    "myTasks": "My tasks",
+    "allTasks": "All tasks",
+    "status": {
+      "todo": "To do",
+      "in_progress": "In progress",
+      "done": "Done"
+    },
+    "addNote": "Add note",
+    "notes": "Notes",
+    "dueDate": "Due date",
+    "assignedTo": "Assigned to",
+    "total": "{count} tasks total"
+  },
+  "projects": {
+    "title": "Projects",
+    "new": "New project",
+    "description": "Description",
+    "status": {
+      "active": "Active",
+      "archived": "Archived"
+    }
+  },
+  "updates": {
+    "title": "Updates",
+    "new": "New update",
+    "category": {
+      "general": "General",
+      "important": "Important",
+      "news": "News"
+    }
+  },
+  "members": {
+    "title": "Members",
+    "count": "members",
+    "roleAdmin": "Admin",
+    "roleMember": "Member",
+    "unnamed": "Unnamed",
+    "empty": "No members yet"
+  },
+  "admin": {
+    "title": "Admin dashboard",
+    "users": "Users",
+    "approve": "Approve",
+    "block": "Block",
+    "role": "Role",
+    "status": "Status"
+  },
+  "common": {
+    "save": "Save",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "edit": "Edit",
+    "loading": "Loading...",
+    "darkMode": "Dark mode",
+    "language": "Language"
+  }
+}
