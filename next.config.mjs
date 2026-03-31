@@ -3,3 +3,5 @@ const withNextIntl = createNextIntlPlugin('./lib/i18n/request.ts');
 /** @type {import('next').NextConfig} */
 const nextConfig = {};
 export default withNextIntl(nextConfig);
+
+import('@opennextjs/cloudflare').then(m => m.initOpenNextCloudflareForDev());
