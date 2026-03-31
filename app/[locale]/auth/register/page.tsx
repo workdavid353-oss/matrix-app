@@ -1,20 +1,20 @@
 'use client';
 import { useState } from 'react';
 import { useTranslations } from 'next-intl';
-import { useRouter, useParams } from 'next/navigation';
+import { useParams } from 'next/navigation';
 import Link from 'next/link';
 import { createClient } from '@/lib/supabase/client';
 
 export default function RegisterPage() {
   const t = useTranslations('auth');
   const tc = useTranslations('common');
-  const router = useRouter();
   const { locale } = useParams();
   const [fullName, setFullName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
 
   async function handleRegister(e: React.FormEvent) {
     e.preventDefault();
@@ -27,7 +27,7 @@ export default function RegisterPage() {
       password,
       options: {
         data: { full_name: fullName },
-        // Profile is auto-created via trigger with status='pending'
+        emailRedirectTo: `${window.location.origin}/${locale}/auth/pending`,
       },
     });
 
@@ -35,8 +35,27 @@ export default function RegisterPage() {
       setError(error.message);
       setLoading(false);
     } else {
-      router.push(`/${locale}/auth/pending`);
+      setSubmitted(true);
+      setLoading(false);
     }
+  }
+
+  if (submitted) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-950 px-4">
+        <div className="w-full max-w-sm text-center">
+          <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-blue-100 dark:bg-blue-900 mb-6">
+            <svg className="w-8 h-8 text-blue-600 dark:text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+            </svg>
+          </div>
+          <h1 className="text-2xl font-semibold text-gray-900 dark:text-white mb-3">{t('confirmEmail')}</h1>
+          <p className="text-gray-500 dark:text-gray-400 text-sm leading-relaxed">
+            {t('confirmEmailMessage', { email })}
+          </p>
+        </div>
+      </div>
+    );
   }
 
   return (

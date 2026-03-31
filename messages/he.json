@@ -21,7 +21,9 @@
     "pending": "ממתין לאישור",
     "pendingMessage": "החשבון שלך ממתין לאישור מנהל. תקבל גישה בקרוב.",
     "noAccount": "אין לך חשבון?",
-    "haveAccount": "כבר יש לך חשבון?"
+    "haveAccount": "כבר יש לך חשבון?",
+    "confirmEmail": "בדוק את המייל שלך",
+    "confirmEmailMessage": "שלחנו קישור אימות לכתובת {email}. לחץ עליו לאישור החשבון, לאחר מכן המתן לאישור מנהל."
   },
   "tasks": {
     "title": "משימות",
@@ -54,7 +56,10 @@
       "general": "כללי",
       "important": "חשוב",
       "news": "חדשות"
-    }
+    },
+    "comments": "תגובות",
+    "addComment": "כתוב תגובה...",
+    "noComments": "אין תגובות עדיין"
   },
   "members": {
     "title": "חברים",

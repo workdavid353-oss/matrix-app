@@ -2,6 +2,7 @@ import { createClient } from '@/lib/supabase/server';
 import { getTranslations } from 'next-intl/server';
 import NewUpdateButton from '@/components/ui/NewUpdateButton';
 import UpdateActions from '@/components/ui/UpdateActions';
+import UpdateComments from '@/components/ui/UpdateComments';
 import type { Update } from '@/types';
 
 const categoryStyle: Record<string, string> = {
@@ -46,6 +47,9 @@ export default async function UpdatesPage({ params }: { params: Promise<{ locale
                 <span>{update.created_at.slice(0, 10)}</span>
                 {isAdmin && <UpdateActions update={update} />}
               </div>
+            </div>
+            <div className="mt-3 pt-3 border-t border-gray-100 dark:border-gray-800">
+              <UpdateComments updateId={update.id} currentUserId={user!.id} />
             </div>
           </article>
         ))}

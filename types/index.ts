@@ -10,6 +10,7 @@ export interface Profile {
   role: UserRole;
   status: UserStatus;
   created_at: string;
+  email?: string | null;
 }
 
 export interface Project {

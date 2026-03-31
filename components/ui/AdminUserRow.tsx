@@ -15,26 +15,44 @@ export default function AdminUserRow({ user, currentUserId }: { user: Profile; c
   const t = useTranslations('admin');
   const router = useRouter();
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
+  const [currentStatus, setCurrentStatus] = useState(user.status);
+  const [currentRole, setCurrentRole] = useState(user.role);
   const isSelf = user.id === currentUserId;
 
   async function updateStatus(status: 'approved' | 'blocked') {
+    setCurrentStatus(status);
+    setError('');
     setLoading(true);
     const supabase = createClient();
-    await supabase.from('profiles').update({ status }).eq('id', user.id);
+    const { error: err } = await supabase.from('profiles').update({ status }).eq('id', user.id);
+    if (err) {
+      setError(err.message);
+      setCurrentStatus(user.status);
+    } else if (status === 'approved') {
+      fetch('/api/notify-approved', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ userId: user.id, userName: user.full_name }),
+      }).catch(() => {});
+    }
     setLoading(false);
-    router.refresh();
   }
 
   async function updateRole(role: 'admin' | 'member') {
+    setCurrentRole(role);
+    setError('');
     setLoading(true);
     const supabase = createClient();
-    await supabase.from('profiles').update({ role }).eq('id', user.id);
+    const { error: err } = await supabase.from('profiles').update({ role }).eq('id', user.id);
     setLoading(false);
-    router.refresh();
+    if (err) { setError(err.message); setCurrentRole(user.role); }
   }
 
   return (
-    <div className="flex items-center gap-4 px-4 py-3">
+    <div className="flex flex-col px-4 py-3">
+      {error && <p className="text-xs text-red-500 mb-2">{error}</p>}
+    <div className="flex items-center gap-4">
       {/* Avatar */}
       <div className="w-8 h-8 rounded-full bg-brand-100 dark:bg-brand-800/30 flex items-center justify-center flex-shrink-0">
         <span className="text-xs text-brand-800 dark:text-brand-200 font-medium">
@@ -54,14 +72,14 @@ export default function AdminUserRow({ user, currentUserId }: { user: Profile; c
       </div>
 
       {/* Status badge */}
-      <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${statusBadge[user.status]}`}>
-        {user.status}
+      <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${statusBadge[currentStatus]}`}>
+        {currentStatus}
       </span>
 
       {/* Role select */}
-      {!isSelf && user.status === 'approved' && (
+      {!isSelf && currentStatus === 'approved' && (
         <select
-          value={user.role}
+          value={currentRole}
           onChange={e => updateRole(e.target.value as 'admin' | 'member')}
           disabled={loading}
           className="text-xs border border-gray-200 dark:border-gray-700 rounded-lg px-2 py-1 bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 focus:outline-none"
@@ -74,7 +92,7 @@ export default function AdminUserRow({ user, currentUserId }: { user: Profile; c
       {/* Actions */}
       {!isSelf && (
         <div className="flex gap-2">
-          {user.status !== 'approved' && (
+          {currentStatus !== 'approved' && (
             <button
               onClick={() => updateStatus('approved')}
               disabled={loading}
@@ -83,7 +101,7 @@ export default function AdminUserRow({ user, currentUserId }: { user: Profile; c
               {t('approve')}
             </button>
           )}
-          {user.status !== 'blocked' && (
+          {currentStatus !== 'blocked' && (
             <button
               onClick={() => updateStatus('blocked')}
               disabled={loading}
@@ -94,6 +112,7 @@ export default function AdminUserRow({ user, currentUserId }: { user: Profile; c
           )}
         </div>
       )}
+    </div>
     </div>
   );
 }
